@@ -1,0 +1,8 @@
+{
+  "name": "AudioQuest - Narrative Marketplace",
+  "description": "A premium audio book platform where creators can upload chapter-by-chapter stories, listeners buy coins to unlock content, and authors earn from their creativity.",
+  "requestFramePermissions": [
+    "microphone",
+    "camera"
+  ]
+}
