@@ -61,7 +61,7 @@ export interface CoinPackage {
   price: number;
   label: string;
   popular?: boolean;
-  paymentLink?: string; // New: Direct Stripe Payment Link
+  paymentLink?: string; 
 }
 
 export interface SaleConfig {
@@ -76,7 +76,7 @@ export interface VisualAsset {
   id: string;
   url: string;
   type: 'image' | 'video';
-  duration: number; // Default 8s
+  duration: number; 
   isMuted: boolean;
   transitionType: TransitionType;
 }

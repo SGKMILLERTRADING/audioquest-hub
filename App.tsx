@@ -11,7 +11,7 @@ import AudioPlayer from './components/AudioPlayer';
 import NotificationToast from './components/NotificationToast';
 import LoginPage from './components/LoginPage';
 import InstructionalHub from './components/InstructionalHub';
-import { Page, User, Book, Scene, AppNotification, PayoutInfo, FooterLink, SaleConfig, SocialLinks, CoinPackage } from './types';
+import { Page, User, Book, Scene, AppNotification, FooterLink, SaleConfig, SocialLinks, CoinPackage, PayoutInfo } from './types';
 import { MOCK_BOOKS, MOCK_CHAPTERS, CATEGORIES as INITIAL_CATEGORIES, COIN_PACKAGES as INITIAL_COIN_PACKAGES } from './constants';
 
 const COIN_CONVERSION_VALUE = 0.005; 
@@ -232,12 +232,57 @@ const App: React.FC = () => {
   const renderPage = () => {
     if (!user) return null;
     switch (activePage) {
-      case Page.HOME: return <Home books={books} latestScenes={latestScenes} onSelectBook={selected => { setSelectedBook(selected); setActivePage(Page.BOOK_DETAILS); }} onNavigate={setActivePage} heroContent={heroContent} promoBanner={promoBanner} user={user} saleConfig={saleConfig} onUpdateHeroImage={(url) => setHeroContent(prev => ({ ...prev, backgroundImage: url }))} onUpdatePromoBanner={setPromoBanner} />;
-      case Page.EXPLORE: return <Explore books={books} onSelectBook={selected => { setSelectedBook(selected); setActivePage(Page.BOOK_DETAILS); }} onNavigate={setActivePage} />;
-      case Page.BOOK_DETAILS: return selectedBook ? <BookDetails book={selectedBook} scenes={scenesMap[selectedBook.id] || []} user={user} onPlay={setActiveScene} onPurchase={handleUnlockScene} /> : null;
-      case Page.STUDIO: return <WriterStudio user={user} books={books} onAddBook={handleAddBook} onAddScene={handleAddScene} onNavigate={setActivePage} categories={categories} />;
-      case Page.STORE: return <CoinStore onPurchaseCoins={handlePurchaseCoins} saleConfig={saleConfig} coinPackages={coinPackages} onUpdatePackages={handleUpdateCoinPackages} isAdmin={user.role === 'admin'} user={user} />;
-      case Page.WALLET: return <Wallet user={user} onUpdatePayout={() => pushNotification("TREASURY", "Payout configuration confirmed.", "success")} onUpdateProfile={(u, a) => setUser(prev => prev ? ({ ...prev, username: u, avatar: a }) : null)} onGiftCoins={handleGiftCoins} categories={categories} onUpdateCategories={setCategories} footerLinks={footerContent.links} onUpdateFooterLinks={(links) => setFooterContent({...footerContent, links})} heroContent={heroContent} onUpdateHero={setHeroContent} announcement={announcement} onUpdateAnnouncement={setAnnouncement} promoBanner={promoBanner} onUpdatePromoBanner={setPromoBanner} saleConfig={saleConfig} onUpdateSaleConfig={setSaleConfig} footerDescription={footerContent.description} onUpdateFooterDescription={(d) => setFooterContent({...footerContent, description: d})} socialLinks={footerContent.socials} onUpdateSocialLinks={(s) => setFooterContent(prev => ({ ...prev, socials: s }))} footerCdImages={footerContent.cdImages} onUpdateFooterCdImages={(imgs) => setFooterContent(prev => ({ ...prev, cdImages: imgs }))} onUpdateStripe={handleUpdateStripeKey} />;
+      case Page.HOME: 
+        return <Home 
+          books={books} 
+          latestScenes={latestScenes} 
+          onSelectBook={(selected: Book) => { setSelectedBook(selected); setActivePage(Page.BOOK_DETAILS); }} 
+          onNavigate={(p: Page) => setActivePage(p)} 
+          heroContent={heroContent} 
+          promoBanner={promoBanner} 
+          user={user} 
+          saleConfig={saleConfig} 
+          onUpdateHeroImage={(url: string) => setHeroContent(prev => ({ ...prev, backgroundImage: url }))} 
+          onUpdatePromoBanner={(p: typeof promoBanner) => setPromoBanner(p)} 
+        />;
+      case Page.EXPLORE: 
+        return <Explore 
+          books={books} 
+          onSelectBook={(selected: Book) => { setSelectedBook(selected); setActivePage(Page.BOOK_DETAILS); }} 
+          onNavigate={(p: Page) => setActivePage(p)} 
+        />;
+      case Page.BOOK_DETAILS: 
+        return selectedBook ? <BookDetails book={selectedBook} scenes={scenesMap[selectedBook.id] || []} user={user} onPlay={(s: Scene) => setActiveScene(s)} onPurchase={handleUnlockScene} /> : null;
+      case Page.STUDIO: 
+        return <WriterStudio user={user} books={books} onAddBook={handleAddBook} onAddScene={handleAddScene} onNavigate={(p: Page) => setActivePage(p)} categories={categories} />;
+      case Page.STORE: 
+        return <CoinStore onPurchaseCoins={handlePurchaseCoins} saleConfig={saleConfig} coinPackages={coinPackages} onUpdatePackages={handleUpdateCoinPackages} isAdmin={user.role === 'admin'} user={user} />;
+      case Page.WALLET: 
+        return <Wallet 
+          user={user} 
+          onUpdatePayout={(info: PayoutInfo) => pushNotification("TREASURY", "Payout configuration confirmed.", "success")} 
+          onUpdateProfile={(u: string, a: string) => setUser(prev => prev ? ({ ...prev, username: u, avatar: a }) : null)} 
+          onGiftCoins={handleGiftCoins} 
+          categories={categories} 
+          onUpdateCategories={(cats: string[]) => setCategories(cats)} 
+          footerLinks={footerContent.links} 
+          onUpdateFooterLinks={(links: FooterLink[][]) => setFooterContent(prev => ({...prev, links}))} 
+          heroContent={heroContent} 
+          onUpdateHero={(h: typeof heroContent) => setHeroContent(h)} 
+          announcement={announcement} 
+          onUpdateAnnouncement={(a: string) => setAnnouncement(a)} 
+          promoBanner={promoBanner} 
+          onUpdatePromoBanner={(pb: typeof promoBanner) => setPromoBanner(pb)} 
+          saleConfig={saleConfig} 
+          onUpdateSaleConfig={(sc: SaleConfig) => setSaleConfig(sc)} 
+          footerDescription={footerContent.description} 
+          onUpdateFooterDescription={(d: string) => setFooterContent(prev => ({...prev, description: d}))} 
+          socialLinks={footerContent.socials} 
+          onUpdateSocialLinks={(s: SocialLinks) => setFooterContent(prev => ({ ...prev, socials: s }))} 
+          footerCdImages={footerContent.cdImages} 
+          onUpdateFooterCdImages={(imgs: string[]) => setFooterContent(prev => ({ ...prev, cdImages: imgs }))} 
+          onUpdateStripe={handleUpdateStripeKey} 
+        />;
       default: return null;
     }
   };
@@ -247,7 +292,7 @@ const App: React.FC = () => {
   return (
     <Layout activePage={activePage} setActivePage={setActivePage} user={user} theme={theme} toggleTheme={() => setTheme(prev => prev === 'light' ? 'dark' : 'light')} onMarkRead={() => {}} onLogout={() => setUser(null)} footerLinks={footerContent.links} footerDescription={footerContent.description} announcement={announcement} socialLinks={footerContent.socials} footerCdImages={footerContent.cdImages}>
       {renderPage()}
-      {showInstructionalHub && <InstructionalHub videoUrl={instructionalVideo} onUpdate={setInstructionalVideo} onClose={() => setShowInstructionalHub(false)} user={user} />}
+      {showInstructionalHub && <InstructionalHub videoUrl={instructionalVideo} onUpdate={(url: string) => setInstructionalVideo(url)} onClose={() => setShowInstructionalHub(false)} user={user} />}
       {activeScene && selectedBook && <AudioPlayer scene={activeScene} book={selectedBook} onClose={() => setActiveScene(null)} onNext={() => {}} onPrev={() => {}} />}
       <div className="fixed top-20 right-4 z-[100] flex flex-col gap-2 pointer-events-none">
         {toasts.map(t => <NotificationToast key={t.id} message={t.message} type={t.type as any} title={t.title} />)}
