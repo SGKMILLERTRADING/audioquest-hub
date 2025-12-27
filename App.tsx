@@ -1,18 +1,18 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
-import Layout from './components/Layout';
-import Home from './pages/Home';
-import Explore from './pages/Explore';
-import BookDetails from './pages/BookDetails';
-import WriterStudio from './pages/WriterStudio';
-import CoinStore from './pages/CoinStore';
-import Wallet from './pages/Wallet';
-import AudioPlayer from './components/AudioPlayer';
-import NotificationToast from './components/NotificationToast';
-import LoginPage from './components/LoginPage';
-import InstructionalHub from './components/InstructionalHub';
-import { Page, User, Book, Scene, AppNotification, FooterLink, SaleConfig, SocialLinks, CoinPackage, PayoutInfo } from './types';
-import { MOCK_BOOKS, MOCK_CHAPTERS, CATEGORIES as INITIAL_CATEGORIES, COIN_PACKAGES as INITIAL_COIN_PACKAGES } from './constants';
+import Layout from './components/Layout.tsx';
+import Home from './pages/Home.tsx';
+import Explore from './pages/Explore.tsx';
+import BookDetails from './pages/BookDetails.tsx';
+import WriterStudio from './pages/WriterStudio.tsx';
+import CoinStore from './pages/CoinStore.tsx';
+import Wallet from './pages/Wallet.tsx';
+import AudioPlayer from './components/AudioPlayer.tsx';
+import NotificationToast from './components/NotificationToast.tsx';
+import LoginPage from './components/LoginPage.tsx';
+import InstructionalHub from './components/InstructionalHub.tsx';
+import { Page, User, Book, Scene, AppNotification, FooterLink, SaleConfig, SocialLinks, CoinPackage, PayoutInfo } from './types.ts';
+import { MOCK_BOOKS, MOCK_CHAPTERS, CATEGORIES as INITIAL_CATEGORIES, COIN_PACKAGES as INITIAL_COIN_PACKAGES } from './constants.tsx';
 
 const COIN_CONVERSION_VALUE = 0.005; 
 const WRITER_SHARE_PERCENT = 0.53; 
